@@ -1,0 +1,9 @@
+przedmiot_1 100 50 
+przedmiot_2 120 30
+przedmiot_3 500 20
+przedmiot_4 420 26
+przedmiot_5 510 26
+przedmiot_6 210 13
+przedmiot_7 235 32 
+przedmiot_8 123 20
+przedmiot_9 180 14
