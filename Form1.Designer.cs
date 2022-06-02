@@ -32,14 +32,9 @@ namespace ProblemPlecakowy
             this.uploadFileButton = new System.Windows.Forms.Button();
             this.selectionProgressBar = new System.Windows.Forms.ProgressBar();
             this.uploadFileTextbox = new System.Windows.Forms.TextBox();
-            this.resultsTextBox = new System.Windows.Forms.RichTextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.populationTextBox = new System.Windows.Forms.TextBox();
-            this.mutationOfPopulationTextBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.maximumWeightTextBox = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.amountOfSelectionsTextBox = new System.Windows.Forms.TextBox();
             this.label6 = new System.Windows.Forms.Label();
             this.crossingMixingParentsRadio = new System.Windows.Forms.RadioButton();
             this.crossingMakingChildsRadio = new System.Windows.Forms.RadioButton();
@@ -49,12 +44,22 @@ namespace ProblemPlecakowy
             this.saveAsButton = new System.Windows.Forms.Button();
             this.startSelectionButton = new System.Windows.Forms.Button();
             this.resetButton = new System.Windows.Forms.Button();
-            this.mutationOfAttributeTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.selectionWayRadio = new System.Windows.Forms.GroupBox();
             this.crossingFactorRadio = new System.Windows.Forms.GroupBox();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.populationNumeric = new System.Windows.Forms.NumericUpDown();
+            this.mutationOfPopulationNumeric = new System.Windows.Forms.NumericUpDown();
+            this.mutationOfAttributeNumeric = new System.Windows.Forms.NumericUpDown();
+            this.maximumWeightNumeric = new System.Windows.Forms.NumericUpDown();
+            this.amountOfSelectionsNumeric = new System.Windows.Forms.NumericUpDown();
             this.selectionWayRadio.SuspendLayout();
             this.crossingFactorRadio.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.populationNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mutationOfPopulationNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mutationOfAttributeNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maximumWeightNumeric)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.amountOfSelectionsNumeric)).BeginInit();
             this.SuspendLayout();
             // 
             // uploadFileButton
@@ -83,16 +88,6 @@ namespace ProblemPlecakowy
             this.uploadFileTextbox.TabIndex = 2;
             this.uploadFileTextbox.TextChanged += new System.EventHandler(this.uploadFileTextbox_TextChanged);
             // 
-            // resultsTextBox
-            // 
-            this.resultsTextBox.Location = new System.Drawing.Point(25, 26);
-            this.resultsTextBox.Name = "resultsTextBox";
-            this.resultsTextBox.ReadOnly = true;
-            this.resultsTextBox.Size = new System.Drawing.Size(451, 412);
-            this.resultsTextBox.TabIndex = 4;
-            this.resultsTextBox.Text = "";
-            this.resultsTextBox.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
-            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -103,22 +98,6 @@ namespace ProblemPlecakowy
             this.label3.Text = "Populacja";
             this.label3.Click += new System.EventHandler(this.label3_Click);
             // 
-            // populationTextBox
-            // 
-            this.populationTextBox.Location = new System.Drawing.Point(502, 210);
-            this.populationTextBox.Name = "populationTextBox";
-            this.populationTextBox.Size = new System.Drawing.Size(269, 20);
-            this.populationTextBox.TabIndex = 12;
-            this.populationTextBox.Text = "20";
-            // 
-            // mutationOfPopulationTextBox
-            // 
-            this.mutationOfPopulationTextBox.Location = new System.Drawing.Point(502, 252);
-            this.mutationOfPopulationTextBox.Name = "mutationOfPopulationTextBox";
-            this.mutationOfPopulationTextBox.Size = new System.Drawing.Size(269, 20);
-            this.mutationOfPopulationTextBox.TabIndex = 14;
-            this.mutationOfPopulationTextBox.Text = "10";
-            // 
             // label4
             // 
             this.label4.AutoSize = true;
@@ -128,14 +107,6 @@ namespace ProblemPlecakowy
             this.label4.TabIndex = 13;
             this.label4.Text = "Współczynnik mutacji max 50 (%)";
             // 
-            // maximumWeightTextBox
-            // 
-            this.maximumWeightTextBox.Location = new System.Drawing.Point(502, 333);
-            this.maximumWeightTextBox.Name = "maximumWeightTextBox";
-            this.maximumWeightTextBox.Size = new System.Drawing.Size(269, 20);
-            this.maximumWeightTextBox.TabIndex = 16;
-            this.maximumWeightTextBox.Text = "100";
-            // 
             // label5
             // 
             this.label5.AutoSize = true;
@@ -144,14 +115,6 @@ namespace ProblemPlecakowy
             this.label5.Size = new System.Drawing.Size(100, 13);
             this.label5.TabIndex = 15;
             this.label5.Text = "Pojemność plecaka";
-            // 
-            // amountOfSelectionsTextBox
-            // 
-            this.amountOfSelectionsTextBox.Location = new System.Drawing.Point(502, 376);
-            this.amountOfSelectionsTextBox.Name = "amountOfSelectionsTextBox";
-            this.amountOfSelectionsTextBox.Size = new System.Drawing.Size(269, 20);
-            this.amountOfSelectionsTextBox.TabIndex = 18;
-            this.amountOfSelectionsTextBox.Text = "10";
             // 
             // label6
             // 
@@ -247,22 +210,14 @@ namespace ProblemPlecakowy
             this.resetButton.UseVisualStyleBackColor = true;
             this.resetButton.Click += new System.EventHandler(this.resetButton_Click);
             // 
-            // mutationOfAttributeTextBox
-            // 
-            this.mutationOfAttributeTextBox.Location = new System.Drawing.Point(502, 294);
-            this.mutationOfAttributeTextBox.Name = "mutationOfAttributeTextBox";
-            this.mutationOfAttributeTextBox.Size = new System.Drawing.Size(269, 20);
-            this.mutationOfAttributeTextBox.TabIndex = 28;
-            this.mutationOfAttributeTextBox.Text = "10";
-            // 
             // label7
             // 
             this.label7.AutoSize = true;
             this.label7.Location = new System.Drawing.Point(499, 278);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(136, 13);
+            this.label7.Size = new System.Drawing.Size(173, 13);
             this.label7.TabIndex = 27;
-            this.label7.Text = "Ilość mutowanych cech (%)";
+            this.label7.Text = "Ilość mutowanych cech max 50 (%)";
             this.label7.Click += new System.EventHandler(this.label7_Click);
             // 
             // selectionWayRadio
@@ -287,28 +242,132 @@ namespace ProblemPlecakowy
             this.crossingFactorRadio.TabStop = false;
             this.crossingFactorRadio.Text = "Współczynnik krzyżowania";
             // 
+            // tabControl1
+            // 
+            this.tabControl1.Location = new System.Drawing.Point(25, 22);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(451, 416);
+            this.tabControl1.TabIndex = 31;
+            // 
+            // populationNumeric
+            // 
+            this.populationNumeric.Location = new System.Drawing.Point(502, 210);
+            this.populationNumeric.Maximum = new decimal(new int[] {
+            20000,
+            0,
+            0,
+            0});
+            this.populationNumeric.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.populationNumeric.Name = "populationNumeric";
+            this.populationNumeric.Size = new System.Drawing.Size(269, 20);
+            this.populationNumeric.TabIndex = 32;
+            this.populationNumeric.Value = new decimal(new int[] {
+            20,
+            0,
+            0,
+            0});
+            // 
+            // mutationOfPopulationNumeric
+            // 
+            this.mutationOfPopulationNumeric.Location = new System.Drawing.Point(502, 252);
+            this.mutationOfPopulationNumeric.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.mutationOfPopulationNumeric.Name = "mutationOfPopulationNumeric";
+            this.mutationOfPopulationNumeric.Size = new System.Drawing.Size(269, 20);
+            this.mutationOfPopulationNumeric.TabIndex = 33;
+            this.mutationOfPopulationNumeric.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // mutationOfAttributeNumeric
+            // 
+            this.mutationOfAttributeNumeric.Location = new System.Drawing.Point(502, 294);
+            this.mutationOfAttributeNumeric.Maximum = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.mutationOfAttributeNumeric.Name = "mutationOfAttributeNumeric";
+            this.mutationOfAttributeNumeric.Size = new System.Drawing.Size(269, 20);
+            this.mutationOfAttributeNumeric.TabIndex = 34;
+            this.mutationOfAttributeNumeric.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
+            // maximumWeightNumeric
+            // 
+            this.maximumWeightNumeric.DecimalPlaces = 4;
+            this.maximumWeightNumeric.Location = new System.Drawing.Point(502, 337);
+            this.maximumWeightNumeric.Maximum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            0});
+            this.maximumWeightNumeric.Name = "maximumWeightNumeric";
+            this.maximumWeightNumeric.Size = new System.Drawing.Size(269, 20);
+            this.maximumWeightNumeric.TabIndex = 35;
+            this.maximumWeightNumeric.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // amountOfSelectionsNumeric
+            // 
+            this.amountOfSelectionsNumeric.Location = new System.Drawing.Point(502, 376);
+            this.amountOfSelectionsNumeric.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.amountOfSelectionsNumeric.Minimum = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.amountOfSelectionsNumeric.Name = "amountOfSelectionsNumeric";
+            this.amountOfSelectionsNumeric.Size = new System.Drawing.Size(269, 20);
+            this.amountOfSelectionsNumeric.TabIndex = 36;
+            this.amountOfSelectionsNumeric.Value = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(787, 482);
+            this.Controls.Add(this.amountOfSelectionsNumeric);
+            this.Controls.Add(this.maximumWeightNumeric);
+            this.Controls.Add(this.mutationOfAttributeNumeric);
+            this.Controls.Add(this.mutationOfPopulationNumeric);
+            this.Controls.Add(this.populationNumeric);
+            this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.crossingFactorRadio);
             this.Controls.Add(this.selectionWayRadio);
-            this.Controls.Add(this.mutationOfAttributeTextBox);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.startSelectionButton);
             this.Controls.Add(this.resetButton);
             this.Controls.Add(this.saveAsButton);
             this.Controls.Add(this.setViewButton);
-            this.Controls.Add(this.amountOfSelectionsTextBox);
             this.Controls.Add(this.label6);
-            this.Controls.Add(this.maximumWeightTextBox);
             this.Controls.Add(this.label5);
-            this.Controls.Add(this.mutationOfPopulationTextBox);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.populationTextBox);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.resultsTextBox);
             this.Controls.Add(this.uploadFileTextbox);
             this.Controls.Add(this.selectionProgressBar);
             this.Controls.Add(this.uploadFileButton);
@@ -319,6 +378,11 @@ namespace ProblemPlecakowy
             this.selectionWayRadio.PerformLayout();
             this.crossingFactorRadio.ResumeLayout(false);
             this.crossingFactorRadio.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.populationNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mutationOfPopulationNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.mutationOfAttributeNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.maximumWeightNumeric)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.amountOfSelectionsNumeric)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -329,14 +393,9 @@ namespace ProblemPlecakowy
         private System.Windows.Forms.Button uploadFileButton;
         private System.Windows.Forms.ProgressBar selectionProgressBar;
         private System.Windows.Forms.TextBox uploadFileTextbox;
-        private System.Windows.Forms.RichTextBox resultsTextBox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox populationTextBox;
-        private System.Windows.Forms.TextBox mutationOfPopulationTextBox;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox maximumWeightTextBox;
         private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.TextBox amountOfSelectionsTextBox;
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.RadioButton crossingMakingChildsRadio;
         private System.Windows.Forms.RadioButton selectionTournamentRadio;
@@ -345,11 +404,16 @@ namespace ProblemPlecakowy
         private System.Windows.Forms.Button saveAsButton;
         private System.Windows.Forms.Button startSelectionButton;
         private System.Windows.Forms.Button resetButton;
-        private System.Windows.Forms.TextBox mutationOfAttributeTextBox;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.RadioButton crossingMixingParentsRadio;
         private System.Windows.Forms.GroupBox selectionWayRadio;
         private System.Windows.Forms.GroupBox crossingFactorRadio;
+        private System.Windows.Forms.TabControl tabControl1;
+        private System.Windows.Forms.NumericUpDown populationNumeric;
+        private System.Windows.Forms.NumericUpDown mutationOfPopulationNumeric;
+        private System.Windows.Forms.NumericUpDown mutationOfAttributeNumeric;
+        private System.Windows.Forms.NumericUpDown maximumWeightNumeric;
+        private System.Windows.Forms.NumericUpDown amountOfSelectionsNumeric;
     }
 }
 

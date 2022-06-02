@@ -21,13 +21,14 @@ namespace ProblemPlecakowy
             // Maximum weight can't be lower than total weight of items 
             List<Item> items = new List<Item>();
             List<Individual> population = new List<Individual>();
+            Tuple<TextBox, DataGridView> viewControls;
             Item buforItem;
             Selection selection = SteadyStateSelection;
             Mixing mixing = MixingParentsKeeping;
-
             //Individual buforInd = new Individual();
-            int selectionsAmount = int.Parse(amountOfSelectionsTextBox.Text), startingPopulation = int.Parse(populationTextBox.Text);
-            float mutationOfAttribute = float.Parse(mutationOfAttributeTextBox.Text), mutationOfPopulation = float.Parse(mutationOfPopulationTextBox.Text), maximumWeight = float.Parse(maximumWeightTextBox.Text), minItemWeight = float.MaxValue, buforWeight = 0f;
+            int selectionsAmount = int.Parse(amountOfSelectionsNumeric.Text), startingPopulation = int.Parse(populationNumeric.Text);
+            float mutationOfAttribute = float.Parse(mutationOfAttributeNumeric.Text), mutationOfPopulation = float.Parse(mutationOfPopulationNumeric.Text), maximumWeight = float.Parse(maximumWeightNumeric.Text), minItemWeight = float.MaxValue, buforWeight = 0f;
+            double minValue = double.MaxValue, maxValue = double.MinValue, sumBuf = 0, average=0, median=0,UQ=0,LQ=0, indValue;
             //string[] inputS = System.IO.File.ReadAllLines("../../data.txt");
             string[] inputS = System.IO.File.ReadAllLines(uploadFileOFD.FileName);
             var random = new Random();
@@ -46,9 +47,16 @@ namespace ProblemPlecakowy
             }
             catch
             {
-                resultsTextBox.Text = "Incorrect data!\n";
+                //resultsTextBox.Text = "Incorrect data!\n";
+                MessageBox.Show("Incorrect data!");
                 return;
             }
+            if (!isBackpackPossible(ref items, maximumWeight))
+            {
+                MessageBox.Show("Capacity should be lower than weight of all items!");
+                return;
+            }
+            viewControls = AddNewSelectionTab(selectionNumber++);
             selectionProgressBar.Maximum = selectionsAmount;
             // Setting new populations
             for (int j = 0; j < startingPopulation; j++) population.Add(GenerateIndividual(items, minItemWeight, random, maximumWeight));
@@ -56,42 +64,133 @@ namespace ProblemPlecakowy
             if (selectionSteadyStateRadio.Checked)
             { 
                 selection = SteadyStateSelection;
-                resultsTextBox.Text += "Selection: Steady State Selection\n";
+                viewControls.Item1.Text += "Selection: Steady State Selection\r\n";
             }
             else
             {
                 selection = TournamentSelection;
-                resultsTextBox.Text += "Selection: Tournament Selection\n";
+                viewControls.Item1.Text += "Selection: Tournament Selection\r\n";
             }
             if (crossingMixingParentsRadio.Checked)
             {
                 mixing = MixingParentsDestroying;
-                resultsTextBox.Text += "Mixing Method: Mixing with destroying parents\n";
+                viewControls.Item1.Text += "Mixing Method: Mixing with destroying parents\r\n";
             }
             else
             {
                 mixing = MixingParentsKeeping;
-                resultsTextBox.Text += "Mixing Method: Mixing with keeping parents\n";
+                viewControls.Item1.Text += "Mixing Method: Mixing with keeping parents\r\n";
             }
             for (int i = 0; i < selectionsAmount; i++)
             {
-                resultsTextBox.Text += "Selection: "+i+"\n";
+                viewControls.Item1.Text += "Generation: " + i + "\r\n";
                 selectionProgressBar.Value = i+1;
-                // Selection
-                //SteadyStateSelection(startingPopulation, ref population, minItemWeight, random, maximumWeight, MixingParentsAttributes);
-                //selection(startingPopulation, ref population, minItemWeight, random, maximumWeight, MixingParentsDestroying);
                 selection(startingPopulation, ref population, minItemWeight, random, maximumWeight, mixing);
                 // Mutating
                 MutatePopulation(ref population, mutationOfPopulation, mutationOfAttribute, maximumWeight, ref items, minItemWeight);
                 z = 0;
+                sumBuf = 0;
                 message = "";
                 foreach (Individual ind in population)
                 {
-                    message += "Individual: " + z++ + " " + ind.getValue() + " " + ind.getWeight() + "\n";
+                    indValue = ind.getValue();
+                    message += "Individual: " + z++ + " " + indValue + " " + ind.getWeight();
+                    foreach(Item item in ind.getItems())
+                    {
+                        message += " " + item.getName();
+                    }
+                    message += "\r\n";
+                    sumBuf += indValue;
+                    if (minValue > indValue) minValue = indValue;
+                    if (maxValue < indValue) maxValue = indValue;
                 }
-                resultsTextBox.Text += message;
+                // For standard deviation
+                average = sumBuf / startingPopulation;
+                sumBuf = 0;
+                foreach (Individual ind in population)
+                {
+                    sumBuf = (average - ind.getValue()) * (average - ind.getValue());
+                }
+                //Sort before finding median, UQ, BQ
+                population = population.OrderBy(o => o.getValue()).ToList();
+                if (startingPopulation % 2 == 0) //E
+                {
+                    median = (population[(startingPopulation / 2) - 1].getValue() + population[startingPopulation / 2].getValue())/2;
+                    if ((startingPopulation/2) % 2 == 0)//E
+                    {
+                        LQ = (population[(startingPopulation / 4) - 1].getValue() + population[startingPopulation / 4].getValue())/2;
+                        UQ = (population[(startingPopulation / 4) + (startingPopulation / 2) - 1].getValue() + population[startingPopulation / 4 + (startingPopulation / 2)].getValue())/2;
+                    }
+                    else //O
+                    {
+                        LQ = population[startingPopulation / 4].getValue();
+                        UQ = population[(startingPopulation / 4) + (startingPopulation / 2)].getValue();
+                    }
+                }
+                else //O
+                {
+                    median = population[startingPopulation / 2].getValue();
+                    if ((startingPopulation / 2) % 2 == 0)//E
+                    {
+                        LQ = (population[(startingPopulation / 4) - 1].getValue() + population[startingPopulation / 4].getValue()) / 2;
+                        UQ = (population[(startingPopulation / 4) + (startingPopulation / 2) + 1].getValue() + population[startingPopulation / 4 + (startingPopulation / 2)].getValue()) / 2;
+                    }
+                    else //O
+                    {
+                        LQ = population[startingPopulation / 4].getValue();
+                        UQ = population[(startingPopulation / 4) + (startingPopulation / 2) + 1].getValue();
+                    }
+                }
+                viewControls.Item1.Text += message;
+                viewControls.Item2.Rows.Add(new Object[] { i, average, maxValue, Math.Sqrt(sumBuf/(startingPopulation-1)), LQ, median, UQ });
             }
             selectionProgressBar.Value = 0;
+        }
+        private Tuple<TextBox, DataGridView> AddNewSelectionTab(int selectionNumber)
+        {
+            TabPage tp = new TabPage("Selection " + selectionNumber);
+            tabControl1.TabPages.Add(tp);
+
+            TextBox tbView1 = new TextBox();
+            tbView1.Dock = DockStyle.Fill;
+            tbView1.Multiline = true;
+            tbView1.WordWrap = false;
+            tbView1.ScrollBars = ScrollBars.Both;
+            tbView1.ReadOnly = true;
+            if (!isSelectionDisplayed) tbView1.Hide();
+            tp.Controls.Add(tbView1);
+
+            //TextBox tbView2 = new TextBox();
+            //tbView2.Dock = DockStyle.Fill;
+            //tbView2.Multiline = true;
+            //tbView2.ScrollBars = ScrollBars.Vertical;
+            //tbView2.ReadOnly = true;
+            //tbView2.TextAlign = HorizontalAlignment.Center;
+            //if (isSelectionDisplayed)tbView2.Hide();
+            //tp.Controls.Add(tbView2);
+
+            DataGridView dg = new DataGridView();
+            dg.DefaultCellStyle.Font = new Font("Arial", 10f, GraphicsUnit.Pixel);
+            dg.Dock = DockStyle.Fill;
+            dg.ColumnCount = 7;
+            dg.RowHeadersVisible = false;
+            dg.Columns[0].Name = "Gen";
+            dg.Columns[1].Name = "Average";
+            dg.Columns[2].Name = "Maximum";
+            dg.Columns[3].Name = "SD";
+            dg.Columns[4].Name = "LQ";
+            dg.Columns[5].Name = "Median";
+            dg.Columns[6].Name = "UQ";
+            dg.Columns[0].Width = 32;
+            for (int i=1;i<7;i++)
+                dg.Columns[i].Width = 68;
+            dg.ReadOnly = true;
+            if (isSelectionDisplayed) dg.Hide();
+            tp.Controls.Add(dg);
+
+            tabControl1.SelectedTab = tp;
+            Tuple<TextBox, DataGridView> tb = Tuple.Create(tbView1, dg);
+            return tb;
         }
         private delegate void Selection(int startingPopulation, ref List<Individual> population, float minItemWeight, Random random, float maximumWeight, Mixing mixingMethod);
         private delegate List<Individual> Mixing(int startingPopulation, List<Individual> population, Random random, float maximumWeight);
@@ -186,26 +285,36 @@ namespace ProblemPlecakowy
         {
             var random = new Random();
             Item buforItem = new Item();
+            int a = 0;
             foreach (Individual indiv in population)
             {
                 if (random.Next(99) < mutationOfPopulation)
                 {
                     // Delete % of items
-                    for (int i = 0; i < (mutationOfAttribute / 100 ) * indiv.getItems().Count; i++) indiv.removeItem(random.Next(indiv.getItems().Count));
-                    // At this moment algorithm needs to randomize items that will fit in removed once, and wouldn't add item if the randomised item
+                    for (int i = 0; i < Math.Ceiling((mutationOfAttribute / 100 ) * indiv.getItems().Count); i++) indiv.removeItem(random.Next(indiv.getItems().Count));
+                    // At this moment algorithm needs to randomize items that will fit in removed once, and wouldn't add item if the randomised item is the same
                     for (int i = 0; i < (mutationOfAttribute / 100) * indiv.getItems().Count; i++) 
                     {
+                        a = 0;
                         if (maximumWeight - indiv.getWeight() > minItemWeight)
                         {
                             do
                             {
                                 buforItem = listOfItems[random.Next(listOfItems.Count)];
-                            } while (indiv.getWeight() + buforItem.getWeight() > maximumWeight || indiv.getItems().Contains(buforItem));
-                            indiv.addItem(buforItem);
+                                a++;
+                            } while ((indiv.getWeight() + buforItem.getWeight() > maximumWeight || indiv.getItems().Contains(buforItem))&&a<=100);
+                            if (a <= 100) indiv.addItem(buforItem);
                         }
                     }
                 }
             }
+        }
+        private bool isBackpackPossible(ref List<Item> items, double capacity)
+        {
+            double weight=0;
+            foreach(Item item in items) weight += item.getWeight();
+            if (weight > capacity) return true;
+            else return false;
         }
     }
 }

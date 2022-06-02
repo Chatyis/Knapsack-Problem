@@ -13,6 +13,8 @@ namespace ProblemPlecakowy
     public partial class Form1 : Form
     {
         private OpenFileDialog uploadFileOFD = new OpenFileDialog();
+        private int selectionNumber = 1;
+        public bool isSelectionDisplayed = true;
         public Form1()
         {
             InitializeComponent();
@@ -31,6 +33,23 @@ namespace ProblemPlecakowy
         }
         private void setViewButton_Click(object sender, EventArgs e)
         {
+            foreach(Control item in tabControl1.Controls.OfType<TabPage>().ToArray())
+            {
+                if (isSelectionDisplayed)
+                {
+                    item.Controls.OfType<TextBox>().ToArray()[0].Hide();
+                    item.Controls.OfType<DataGridView>().ToArray()[0].Show();
+                    setViewButton.Text = "Wyświetl Selekcje";
+                }
+                else
+                {
+                    item.Controls.OfType<TextBox>().ToArray()[0].Show();
+                    item.Controls.OfType<DataGridView>().ToArray()[0].Hide();
+                    setViewButton.Text = "Porównaj Generacje";
+                }
+            }
+            
+            isSelectionDisplayed = !isSelectionDisplayed;
         }
         private void saveAsButton_Click(object sender, EventArgs e)
         {
@@ -41,12 +60,21 @@ namespace ProblemPlecakowy
             if (saveAsSFD.ShowDialog() == DialogResult.OK) 
             { 
                 MessageBox.Show(saveAsSFD.FileName);
-                System.IO.File.WriteAllText(saveAsSFD.FileName, resultsTextBox.Text); 
+                System.IO.File.WriteAllText(saveAsSFD.FileName, ""); 
+                foreach(Control item in tabControl1.Controls.OfType<TabPage>().ToList())
+                {
+                    System.IO.File.AppendAllText(saveAsSFD.FileName, item.Controls.OfType<TextBox>().ToArray()[0].Text+"\r\n");
+                }
             }
         }
         private void resetButton_Click(object sender, EventArgs e)
         {
-            resultsTextBox.Text = "";
+            //resultsTextBox.Text = "";
+            foreach (Control item in tabControl1.Controls.OfType<TabPage>().ToList())
+            {
+                tabControl1.Controls.Remove(item);
+                selectionNumber = 1;
+            }
         }
         private void startSelectionButton_Click(object sender, EventArgs e)
         {
@@ -93,6 +121,16 @@ namespace ProblemPlecakowy
         }
 
         private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tabPage2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
         }
