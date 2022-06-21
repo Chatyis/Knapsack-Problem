@@ -34,15 +34,18 @@ namespace ProblemPlecakowy
             var random = new Random();
             int z = 0;
             string message = "";
-
+            
             // Loading items, finding minimal weight
             try
             { 
                 foreach (string line in inputS)
                 {
                     buforWeight = float.Parse(line.Split(' ')[2]);
-                    items.Add(new Item(line.Split(' ')[0], float.Parse(line.Split(' ')[1]), buforWeight));
-                    if (buforWeight < minItemWeight) minItemWeight = buforWeight;
+                    if (buforWeight <= maximumWeight)
+                    {
+                        items.Add(new Item(line.Split(' ')[0], float.Parse(line.Split(' ')[1]), buforWeight));
+                        if (buforWeight < minItemWeight) minItemWeight = buforWeight;
+                    }
                 }
             }
             catch
@@ -51,9 +54,9 @@ namespace ProblemPlecakowy
                 MessageBox.Show("Incorrect data!");
                 return;
             }
-            if (!isBackpackPossible(ref items, maximumWeight))
+            if (!isBackpackPossible(ref items, maximumWeight, minItemWeight))
             {
-                MessageBox.Show("Capacity should be lower than weight of all items!");
+                MessageBox.Show("Could not create any backpack!\r\nCapacity should be higher than minimal weight of items and\r\nCapacity should be lower than maximum weight of items");
                 return;
             }
             viewControls = AddNewSelectionTab(selectionNumber++);
@@ -200,16 +203,20 @@ namespace ProblemPlecakowy
             Individual indiv = new Individual();
             Item buforItem = new Item();
             int a = 0; // !!! Code could need a better fixing that this (also for optimization)
-            do
-            {
-                a = 0;
+            
+            if(listOfItems.Count>1)
+            { 
                 do
                 {
-                    buforItem = listOfItems[random.Next(listOfItems.Count)];
-                    a++;
-                } while ((indiv.getWeight() + buforItem.getWeight() > maximumWeight || indiv.getItems().Contains(buforItem))&& a<=100); //Checking if item fit and isn't already in backpack
-                if(a<=100) indiv.addItem(buforItem);
-            } while (maximumWeight - indiv.getWeight() > minItemWeight && a <= 100); // Checking if there are any items that can be added to backpack
+                    a = 0;
+                    do
+                    {
+                        buforItem = listOfItems[random.Next(listOfItems.Count)];
+                        a++;
+                    } while ((indiv.getWeight() + buforItem.getWeight() > maximumWeight || indiv.getItems().Contains(buforItem))&& a<=100); //Checking if item fit and isn't already in backpack
+                    if(a<=100) indiv.addItem(buforItem);
+                } while (maximumWeight - indiv.getWeight() > minItemWeight && a <= 100); // Checking if there are any items that can be added to backpack
+            }
             return indiv;
         }
         private List<Individual> MixingParentsKeeping(int startingPopulation, List<Individual> population, Random random, float maximumWeight)
@@ -321,11 +328,11 @@ namespace ProblemPlecakowy
                 }
             }
         }
-        private bool isBackpackPossible(ref List<Item> items, double capacity)
+        private bool isBackpackPossible(ref List<Item> items, double capacity, double minItemWeight)
         {
             double weight=0;
             foreach(Item item in items) weight += item.getWeight();
-            if (weight > capacity) return true;
+            if (weight > capacity && minItemWeight <= capacity) return true;
             else return false;
         }
     }
