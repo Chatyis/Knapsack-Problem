@@ -133,7 +133,8 @@ namespace ProblemPlecakowy
                     if ((startingPopulation / 2) % 2 == 0)//E
                     {
                         LQ = (population[(startingPopulation / 4) - 1].getValue() + population[startingPopulation / 4].getValue()) / 2;
-                        UQ = (population[(startingPopulation / 4) + (startingPopulation / 2) + 1].getValue() + population[startingPopulation / 4 + (startingPopulation / 2)].getValue()) / 2;
+                        // GIVES ERROR TO FIX
+                        UQ = (population[(startingPopulation / 4) + (startingPopulation / 2) + 1].getValue() + population[(startingPopulation / 4) + (startingPopulation / 2)].getValue()) / 2; 
                     }
                     else //O
                     {
@@ -225,7 +226,10 @@ namespace ProblemPlecakowy
                 {
                     population.Add(GenerateIndividual(itemsBuf, minItemWeight, random, maximumWeight));
                 }
+                if (j==0 && startingPopulation % 2 == 1 && startingPopulation / 2 % 2 == 0) population.Add(GenerateIndividual(itemsBuf, minItemWeight, random, maximumWeight));
+                if (j==0 && ((startingPopulation-1) % 10 == 0 || (startingPopulation) % 10 == 6)) population.Add(GenerateIndividual(itemsBuf, minItemWeight, random, maximumWeight));
             }
+            
             return population;
         }
         private List<Individual> MixingParentsDestroying(int startingPopulation, List<Individual> population, Random random, float maximumWeight)
@@ -242,6 +246,14 @@ namespace ProblemPlecakowy
                 {
                     population.Add(GenerateIndividual(itemsBuf, minItemWeight, random, maximumWeight));
                 }
+                if (j == 0 && startingPopulation % 2 == 1 && startingPopulation / 2 % 2 == 0)
+                {
+                    for (int x = 0; x < 2; x++)
+                    {
+                        population.Add(GenerateIndividual(itemsBuf, minItemWeight, random, maximumWeight));
+                    }
+                }
+                if (j == 0 && ((startingPopulation - 1) % 10 == 0 || (startingPopulation) % 10 == 6)) population.Add(GenerateIndividual(itemsBuf, minItemWeight, random, maximumWeight));
             }
             // At the end remove parents that are at the beginning because childs are made by destroying them (the other half, that is weak is removed by selection part of code)
             population.RemoveRange(0, (int)Math.Round((startingPopulation + 1) / 2f));

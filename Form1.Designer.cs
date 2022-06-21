@@ -372,7 +372,7 @@ namespace ProblemPlecakowy
             this.Controls.Add(this.selectionProgressBar);
             this.Controls.Add(this.uploadFileButton);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Problem Plecakowy";
             this.Load += new System.EventHandler(this.Form1_Load);
             this.selectionWayRadio.ResumeLayout(false);
             this.selectionWayRadio.PerformLayout();
